@@ -1,29 +1,35 @@
-//Generates and validates token
 const Token = require('../models/Token');
-const { generateToken } = require('../utils/generateToken');
-const { sendTokenToEmail } = require('../services/emailService');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
-exports.generateAndSendToken = async (req, res) => {
-    const { voterEmail } = req.body;
+exports.generateToken = async (req, res) => {
+    try {
+        const { voterId, email } = req.body;
 
-    const token = generateToken();
-    const newToken = new Token({ token, voterEmail });
-    await newToken.save();
+        const token = crypto.randomBytes(20).toString('hex');
 
-    sendTokenToEmail(voterEmail, token);
-    res.json({ message: 'Token generated and sent' });
-};
+        const newToken = new Token({ token, voterId });
+        await newToken.save();
 
-exports.validateToken = async (req, res) => {
-    const { token, voterEmail } = req.body;
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
 
-    const foundToken = await Token.findOne({ token, voterEmail, used: false });
+        const mailOptions = {
+            to: email,
+            from: process.env.EMAIL_USER,
+            subject: 'Voting Token',
+            text: `Your voting token is: ${token}`,
+        };
 
-    if (foundToken) {
-        foundToken.used = true;
-        await foundToken.save();
-        res.json({ message: 'Token validated successfully' });
-    } else {
-        res.status(400).json({ message: 'Invalid or used token' });
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ message: 'Token sent successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
 };

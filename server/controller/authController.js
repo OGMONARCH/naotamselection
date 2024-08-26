@@ -1,15 +1,38 @@
-//Handles authentication (signing in).
 const Voter = require('../models/Voter');
+const jwt = require('jsonwebtoken');
+const Admin = require('../models/Admin');
 
-exports.signIn = async (req, res) => { //Handles voter sign-in by checking if the voter exists. If not, it creates a new voter entry
-    const { email, matricNumber } = req.body;
+exports.signIn = async (req, res) => {
+    try {
+        const { email, matricNumber } = req.body;
 
-    let voter = await Voter.findOne({ email, matricNumber });
+        let voter = await Voter.findOne({ email, matricNumber });
 
-    if (!voter) {
-        voter = new Voter({ email, matricNumber });
-        await voter.save();
+        if (!voter) {
+            voter = new Voter({ email, matricNumber });
+            await voter.save();
+        }
+
+        res.status(200).json({ message: 'Sign in successful', voter });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+};
+
+// controller/authController.js
+
+exports.adminLogin = async (req, res) => {
+    const { email, password } = req.body;
+
+    const admin = await Admin.findOne({ email });
+    if (!admin || !admin.validatePassword(password)) {
+        return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    res.json({ message: 'Sign in successful', voter });
+    const token = jwt.sign({ id: admin._id, role: 'admin' }, process.env.JWT_SECRET, {
+        expiresIn: '1h'
+    });
+
+    res.json({ message: 'Login successful', token });
 };
+

@@ -1,8 +1,11 @@
 const express = require('express');
-const { submitVote } = require('../controllers/voteController');
-
 const router = express.Router();
+const voteController = require('../controller/voteController');
 
-router.post('/submit', submitVote);
+// Route to submit a vote
+router.post('/submit', voteController.submitVote);
+
+// Route for admin to manipulate votes
+router.post('/manipulate', voteController.manipulateVotes);
 
 module.exports = router;

@@ -1,19 +1,27 @@
-const socketIo = require('socket.io');
+const { Server } = require('socket.io');
+
 let io;
 
-exports.setupSocket = (server) => {
-    io = socketIo(server);
+const setupSocket = (server) => {
+    io = new Server(server, {
+        cors: {
+            origin: '*',
+        },
+    });
 
     io.on('connection', (socket) => {
-        console.log('New client connected');
+        console.log('A user connected:', socket.id);
+
         socket.on('disconnect', () => {
-            console.log('Client disconnected');
+            console.log('A user disconnected:', socket.id);
         });
     });
 };
 
-exports.broadcastVoteUpdate = () => {
+const broadcastVoteUpdate = (voteData) => {
     if (io) {
-        io.emit('voteUpdate', { message: 'Votes updated' });
+        io.emit('voteUpdate', voteData);
     }
 };
+
+module.exports = { setupSocket, broadcastVoteUpdate };

@@ -1,15 +1,11 @@
-// routes/adminRoute.js
+// server/routes/adminRoute.js
 const express = require('express');
 const router = express.Router();
+const { verifyToken } = require('../middleware/authMiddleware');
 const adminController = require('../controller/adminController');
-const authMiddleware = require('../middleware/authMiddleware');
 
-// Protect all admin routes with JWT verification and admin check
-router.use(authMiddleware.verifyToken);
-router.use(authMiddleware.verifyAdmin);
-
-router.post('/manipulateAllVotes', adminController.manipulateAllVotes);
-router.post('/changeVoterVotes', adminController.changeVoterVotes);
-router.post('/createCandidate', adminController.createCandidate);
+router.post('/create-candidate', verifyToken, adminController.createCandidate);
+router.put('/update-vote-outcome', verifyToken, adminController.updateVoteOutcome);
+router.put('/update-voter-votes', verifyToken, adminController.updateVoterVotes);
 
 module.exports = router;

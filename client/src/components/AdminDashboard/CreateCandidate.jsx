@@ -2,40 +2,37 @@ import  { useState } from 'react';
 import adminService from '../../services/adminService';
 
 const CreateCandidate = () => {
-  const [candidateName, setCandidateName] = useState('');
+  const [name, setName] = useState('');
   const [position, setPosition] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await adminService.createCandidate(candidateName, position);
-      alert(response.message);
-    } catch (error) {
-      alert('Error creating candidate');
+      const response = await adminService.createCandidate({ name, position });
+      setMessage(response.message);
+    } catch (err) {
+      setMessage(`${err} creating candidate.`);
     }
   };
 
   return (
-    <div>
-      <h2>Create Candidate</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={candidateName}
-          onChange={(e) => setCandidateName(e.target.value)}
-          placeholder="Candidate Name"
-          required
-        />
-        <input
-          type="text"
-          value={position}
-          onChange={(e) => setPosition(e.target.value)}
-          placeholder="Position"
-          required
-        />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Candidate Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Position"
+        value={position}
+        onChange={(e) => setPosition(e.target.value)}
+      />
+      <button type="submit">Create Candidate</button>
+      {message && <p>{message}</p>}
+    </form>
   );
 };
 

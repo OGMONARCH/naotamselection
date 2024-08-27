@@ -1,26 +1,26 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './Pages/Home';
-import Admin from './Pages/Admin';
-import Voting from './Pages/Voting';
-import Results from './Pages/Results';
-import Navbar from './components/Navbar/Navbar';
-import TokenVerification from './components/TokenVerification/TokenVerification';
-import PrivateRoute from './components/ProtectedRoutes/PrivateRoutes';
-import AdminRoute from './components/ProtectedRoutes/AdminRoute';
+import SignIn from './components/SignIn';
+import AdminLogin from './components/AdminLogin';
+import CandidateList from './components/CandidateList';
+import CastVote from './components/CastVote';
+import FinalVoteResult from './components/FinalVoteResult';
+import Header from './components/Header';
 
-const App = () => {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
-        <Route path="/voting" element={<PrivateRoute><Voting /></PrivateRoute>} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/verify-token" element={<TokenVerification />} />
-      </Routes>
-    </Router>
-  );
-};
+function App() {
+    return (
+        <Router>
+            <Header />
+            <div className="container mx-auto mt-4">
+                <Routes>
+                    <Route path="/" element={<SignIn />} />
+                    <Route path="/admin-login" element={<AdminLogin />} />
+                    <Route path="/candidates" element={<CandidateList />} />
+                    <Route path="/cast-vote" element={<CastVote />} />
+                    <Route path="/vote-result" element={<FinalVoteResult />} />
+                </Routes>
+            </div>
+        </Router>
+    );
+}
 
 export default App;

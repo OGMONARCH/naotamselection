@@ -1,4 +1,3 @@
-// server/controller/voteController.js
 const Vote = require('../models/Vote');
 const Token = require('../models/Token');
 const { broadcastVoteUpdate } = require('../app');
@@ -28,6 +27,24 @@ exports.submitVote = async (req, res) => {
         broadcastVoteUpdate(voteData);
 
         res.status(200).json({ message: 'Vote submitted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+};
+
+exports.castVote = async (req, res) => {
+    try{
+        res.status(200).json({ message: 'Vote cast successfully' });
+    }
+    catch(err){
+        res.status(500).json({ message: 'Server error', error: err.message });
+        }
+};
+
+exports.manipulateVotes = async (req, res) => {
+    try {
+        
+        res.status(200).json({ message: 'Votes manipulated successfully' });
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
     }

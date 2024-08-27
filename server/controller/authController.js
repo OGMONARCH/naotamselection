@@ -19,7 +19,6 @@ exports.signIn = async (req, res) => {
     }
 };
 
-// controller/authController.js
 
 exports.adminLogin = async (req, res) => {
     const { email, password } = req.body;

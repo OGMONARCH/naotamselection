@@ -1,5 +1,4 @@
-// server/controller/adminController.js
-const Candidate = require('../models/Candidate');
+const Candidate = require('../models/Candidates');
 const Voter = require('../models/Voter');
 
 // Create a candidate

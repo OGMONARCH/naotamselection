@@ -1,6 +1,12 @@
 require('dotenv').config(); // Load environment variables
 
 const express = require('express');
+const app = express();
+const adminRoute = require('./Routes/adminRoute');
+const authRoute = require('./Routes/authRoute');
+const voteRoute = require('./Routes/voteRoute');
+
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -13,21 +19,17 @@ const authMiddleware = require('./middleware/authMiddleware');
 app.use('/api/admin', adminRoute);
 app.use('/api/vote', authMiddleware.verifyToken, voteRoute);
 
-const adminRoute = require('./Routes/adminRoute');
-const authRoute = require('./Routes/authRoute');
-const voteRoute = require('./Routes/voteRoute');
-
-// Initialize express app
-const app = express();
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 // Routes
 app.use('/api/auth', authRoute);
 app.use('/api/vote', voteRoute);
+
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -37,8 +39,10 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch((err) => console.error('MongoDB connection error:', err));
 
+
 // Create HTTP server
 const server = http.createServer(app);
+
 
 // Initialize socket.io
 const io = socketIo(server);

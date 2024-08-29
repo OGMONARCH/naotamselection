@@ -17,7 +17,7 @@ const CastVote = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/vote/cast-vote', { votes });
+            const response = await axios.post('http://localhost:5000/api/vote/cast-vote', { votes });
             alert(response.data.message);
         } catch (error) {
             alert(`Error submitting vote ${error}`);

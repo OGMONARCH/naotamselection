@@ -8,7 +8,7 @@ const SignIn = () => {
     const handleSignIn = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/auth', { email, matricNumber });
+            const response = await axios.post('http://localhost:5000/api/auth/signin', { email, matricNumber });
             alert(response.data.message);
         } catch (error) {
             alert(`Sign in failed. Please try again. `);

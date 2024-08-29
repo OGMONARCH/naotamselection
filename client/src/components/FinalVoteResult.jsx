@@ -1,5 +1,3 @@
-//This component displays the voting results.
-
 import  { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -9,7 +7,7 @@ const VoteResult = () => {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const response = await axios.get('/api/vote/results');
+                const response = await axios.get('http://localhost:5000/api/vote/results');
                 setResults(response.data);
             } catch (error) {
                 alert(`Error fetching results  ${error}`);

@@ -7,7 +7,7 @@ const CandidateList = () => {
     useEffect(() => {
         const fetchCandidates = async () => {
             try {
-                const response = await axios.get('/api/candidates');
+                const response = await axios.get('http://localhost:5000/api/candidates');
                 setCandidates(response.data);
             } catch (error) {
                 alert(`Error fetching candidates ${error}`);

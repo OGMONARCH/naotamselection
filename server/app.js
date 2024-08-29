@@ -2,9 +2,9 @@ require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const app = express();
-const adminRoute = require('./routes/adminRoute');
-const authRoute = require('./routes/authRoute');
-const voteRoute = require('./routes/voteRoute');
+const adminRoute = require('./Routes/adminRoute');
+const authRoute = require('./Routes/authRoute');
+const voteRoute = require('./Routes/voteRoute');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');

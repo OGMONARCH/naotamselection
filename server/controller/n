@@ -1,0 +1,6 @@
+default login for admin page
+upload matric number and email to database
+fetch matric number and email so displays on frontend
+send mail for token to email uploaded to database
+fix bugs 
+create default homepage for the endpoints
